@@ -15,17 +15,20 @@
                     width: '20%',
                     targets: [0]
                 }, {
-                    width: '20%',
+                    width: '15%',
                     targets: [1]
                 }, {
-                    width: '20%',
+                    width: '15%',
                     targets: [2]
                 }, {
-                    width: '20%',
+                    width: '15%',
                     targets: [3]
                 },{
-                    width: 'auto',
+                    width: '15%',
                     targets: [4]
+                },{
+                    width: 'auto',
+                    targets: [5]
                 }]
             });
 		    $('select[name=DataTables_Table_0_length]').show();
@@ -75,13 +78,19 @@
                             <div class="input-field col s6">
                                 <select id="single-select2" class="basic-select" name="busstop" required>
                                     <option value="" disabled="disabled" selected="selected">Choose your option</option>
-                                    @for ($i = 3; $i < 9 ;$i ++)
-                                        <option value="{{$i}}">{{$i}}BusStop</option>
-                                    @endFor
+                                    @foreach ($busstops as $busstop)
+                                        <option value="{{$busstop->id}}">{{$busstop->name}}</option>
+                                    @endForeach
                                 </select>
                                 <label for="single-select2">BusStop</label>
                             </div>
-                            <div class="input-field col s6 right-align">
+                            <div class="input-field col s6">
+                                <input type="text" id="booking_id" name="booking_id" class="validate" required>
+                                <label for="booking_id" class="active">Booking ID</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 right-align">
                             <button class="btn waves-effect waves-set" type="submit" name="update_profile">Save<i class="material-icons right">save</i>
                             </button>
                             </div>
@@ -110,6 +119,7 @@
                                 <thead>
                                 <tr>
                                     <th>Time</th>
+                                    <th>Booking ID</th>
                                     <th>Tour Name</th>
                                     <th>Passenger Name</th>
                                     <th>Passenger Phone</th>
@@ -121,6 +131,7 @@
                                     @foreach ($tourlists as $tourlist)
                                         <tr>
                                             <td>{{$tourlist->time }}</td>
+                                            <td>{{$tourlist->booking_id }}</td>
                                             <td>{{$tourlist->name }}</td>
                                             <td>{{$tourlist->passenger_name }}</td>
                                             <td>{{$tourlist->passenger_phone }}</td>

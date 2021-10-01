@@ -10,6 +10,7 @@ use App\passenger;
 use App\tour;
 use App\tourlist;
 use App\Permission;
+use App\busstop;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -123,7 +124,7 @@ class HomeController extends Controller
                     ->first();
         $tour->delete();
         return back();
-    }
+    }/*
     public function passenger()
     {
         $passengers = passenger::select()
@@ -149,16 +150,19 @@ class HomeController extends Controller
                     ->first();
         $passenger->delete();
         return back();
-    }
+    }*/
     public function today()
     {
         $tours = tour::select()
                     ->get();
-        $tourlists = tourlist::select('tourlists.id','tourlists.time','tours.name','tourlists.passenger_name','tourlists.passenger_phone','tourlists.busstop')
+        $busstops = busstop::select()
+                    ->get();
+        $tourlists = tourlist::select('tourlists.id','tourlists.time','tours.name','tourlists.booking_id','tourlists.passenger_name','tourlists.passenger_phone','tourlists.busstop')
                     ->leftjoin('tours','tourlists.tour_id','=','tours.id')
                     ->get();
         return view('admin.today')
                 ->with('tourlists',$tourlists)
+                ->with('busstops',$busstops)
                 ->with('tours',$tours);
     }
     public function addpt(Request $request)
@@ -169,6 +173,7 @@ class HomeController extends Controller
         $tourlist->passenger_name = $request->passenger_name;
         $tourlist->passenger_phone = $request->passenger_phone;
         $tourlist->busstop = $request->busstop;
+        $tourlist->booking_id = $request->booking_id;
         $tourlist->save();
         return back();
     }
