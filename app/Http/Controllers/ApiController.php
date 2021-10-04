@@ -36,6 +36,19 @@ class ApiController extends Controller
         }
         return json_encode($return); 
     }
+    public function token($id,$token)
+    {
+        $tour = tourlist::select()->where('booking_id',$id)->first();
+        if(is_null($tour)){
+            $return = array('status' => 'No');
+        }
+        else{
+            $tour->device_token = $token;
+            $tour->save();
+            $return = array('status' => 'Yes');
+        }
+        return json_encode($return); 
+    }
     public function getbusstops ()
     {
         $busstops = busstop::select()

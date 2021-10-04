@@ -17,6 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/login/{id}', 'ApiController@login');
+Route::get('/token/{id}/{token}', 'ApiController@token');
 Route::get('/getbusstops', 'ApiController@getbusstops');
 Route::get('/getbusstop/{id}', 'ApiController@getbusstop');
 Route::get('/getbusinfo/{id}', 'ApiController@getbusinfo');
