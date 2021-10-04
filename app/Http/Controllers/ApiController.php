@@ -53,7 +53,7 @@ class ApiController extends Controller
     public function getbusinfo($id)
     {
         $tourlist = tourlist::select()->where('booking_id',$id)->first();
-        $tour = tour::select()->where('id',$request->tour_id)->first();
+        $tour = tour::select()->where('id',$tourlist->tour_id)->first();
         $return = array('status' => 'yes','tour' => $tour);
         return json_encode($return); 
     }

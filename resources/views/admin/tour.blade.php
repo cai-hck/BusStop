@@ -12,23 +12,26 @@
 		    $('select').material_select();
             $('.datatable-badges').DataTable({
                 columnDefs: [{
-                    width: '17%',
+                    width: '15%',
                     targets: [0]
                 }, {
-                    width: '17%',
+                    width: '15%',
                     targets: [1]
                 }, {
-                    width: '17%',
+                    width: '15%',
                     targets: [2]
                 }, {
-                    width: '17%',
+                    width: '15%',
                     targets: [3]
                 }, {
-                    width: '20%',
+                    width: '15%',
                     targets: [4]
+                }, {
+                    width: '15%',
+                    targets: [5]
                 },{
                     width: 'auto',
-                    targets: [5]
+                    targets: [6]
                 }]
             });
 		    $('select[name=DataTables_Table_0_length]').show();
@@ -62,13 +65,17 @@
                     <form  action="{{ url('/admin/addtour') }}" method="POST"  enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="input-field col s6">
+                            <div class="input-field col s4">
                                 <input type="text" id="name" name="name" class="validate" required>
                                 <label for="name" class="active">Name</label>
                             </div>
-                            <div class="input-field col s6">
+                            <div class="input-field col s4">
                                 <input type="text" id="bus_number" name="bus_number" class="validate" required>
                                 <label for="bus_number" class="active">Bus Number</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <input type="time" id="bus_number" name="time" class="validate" required>
+                                <label for="time" class="active">Time</label>
                             </div>
                         </div>
                         <div class="row">
@@ -128,6 +135,7 @@
                                 <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Time</th>
                                     <th>Driver Id</th>
                                     <th>Bus Number</th>
                                     <th>Photo</th>
@@ -139,6 +147,7 @@
                                     @foreach ($tours as $tour)
                                         <tr>
                                             <td>{{$tour->name }}</td>
+                                            <td>{{$tour->time }}</td>
                                             <td>{{$tour->driver_id }}</td>
                                             <td>{{$tour->bus_number }}</td>
                                             <td><img style="width:100px;Height:100px;"src="{{ asset('upload/tour') }}/{{$tour->filename}}"></td>

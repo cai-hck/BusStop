@@ -102,6 +102,7 @@ class HomeController extends Controller
         $tour = new tour();
         $tour->name = $request->name;
         $tour->driver_id = $request->driver_id;
+        $tour->time = $request->time;
         $tour->bus_number = $request->bus_number;
         if ($request->hasFile('image')) {
             $this->validate($request, [
