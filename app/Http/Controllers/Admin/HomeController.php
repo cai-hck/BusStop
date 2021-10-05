@@ -166,6 +166,33 @@ class HomeController extends Controller
                 ->with('busstops',$busstops)
                 ->with('tours',$tours);
     }
+    public function push()
+    {
+        $tourlists = tourlist::select()
+                    ->get();
+
+        foreach($tourlists as $tourlist){
+            if($tourlist->device_token != '' && $tourlist->time == date('Y-m-d')  && $tourlist->arrived == '' ){
+                $ch = curl_init();
+                $headers  = [
+                            'Content-Type: application/json',
+                        ];
+                $postData = [
+                    'to' => 'ExponentPushToken['.$tourlist->device_token.']',
+                    'title' => 'hello',
+                    'body' => 'world',
+                ];
+                curl_setopt($ch, CURLOPT_URL,'https://exp.host/--/api/v2/push/send');
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));           
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                $result     = curl_exec ($ch);
+                $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            }
+        }
+        return back();
+    }
     public function addpt(Request $request)
     {
         $tourlist = new tourlist();

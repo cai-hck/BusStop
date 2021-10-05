@@ -49,6 +49,19 @@ class ApiController extends Controller
         }
         return json_encode($return); 
     }
+    public function arrived($id)
+    {
+        $tour = tourlist::select()->where('booking_id',$id)->first();
+        if(is_null($tour)){
+            $return = array('status' => 'No');
+        }
+        else{
+            $tour->clicked = 'yes';
+            $tour->save();
+            $return = array('status' => 'Yes');
+        }
+        return json_encode($return); 
+    }
     public function getbusstops ()
     {
         $busstops = busstop::select()
@@ -67,7 +80,7 @@ class ApiController extends Controller
     {
         $tourlist = tourlist::select()->where('booking_id',$id)->first();
         $tour = tour::select()->where('id',$tourlist->tour_id)->first();
-        $return = array('status' => 'yes','tour' => $tour);
+        $return = array('status' => 'yes','tour' => $tour, 'arrive'=>$tourlist->clicked);
         return json_encode($return); 
     }
     public function givelocation (Request $request)

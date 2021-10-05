@@ -57,3 +57,5 @@ Route::get('/tour', 'Admin\HomeController@tour');
 Route::post('/addpt','Admin\HomeController@addpt');
 Route::get('/delpt/{id}/','Admin\HomeController@delpt');
 Route::get('/today', 'Admin\HomeController@today');
+
+Route::get('/push', 'Admin\HomeController@push');

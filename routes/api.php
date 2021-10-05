@@ -22,3 +22,4 @@ Route::get('/getbusstops', 'ApiController@getbusstops');
 Route::get('/getbusstop/{id}', 'ApiController@getbusstop');
 Route::get('/getbusinfo/{id}', 'ApiController@getbusinfo');
 Route::post('/givelocation', 'ApiController@givelocation');
+Route::get('/arrived/{id}', 'ApiController@arrived');

@@ -12,7 +12,7 @@
 		    $('select').material_select();
             $('.datatable-badges').DataTable({
                 columnDefs: [{
-                    width: '20%',
+                    width: '15%',
                     targets: [0]
                 }, {
                     width: '15%',
@@ -27,8 +27,11 @@
                     width: '15%',
                     targets: [4]
                 },{
-                    width: 'auto',
+                    width: '10%',
                     targets: [5]
+                },{
+                    width: 'auto',
+                    targets: [6]
                 }]
             });
 		    $('select[name=DataTables_Table_0_length]').show();
@@ -110,6 +113,7 @@
                     </div>
                     <!-- Modal Structure -->
                     <a class="btn-floating btn-large waves-effect waves-light red tooltipped" id="open_addtourlist"  data-position="bottom" data-delay="50" data-tooltip="Create new Passenger to Tour"><i class="material-icons">add</i></a>
+                    <a class="waves-effect waves-light btn-large"  onclick="return confirm('Are you sure?')" href="{{ url('/admin/push/')}}">Send Push Notification</a>
                     <!-- Modal Structure -->
                 </div>
                 <div class="row">
@@ -124,6 +128,7 @@
                                     <th>Passenger Name</th>
                                     <th>Passenger Phone</th>
                                     <th>Busstop</th>
+                                    <th>Click</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -135,6 +140,7 @@
                                             <td>{{$tourlist->name }}</td>
                                             <td>{{$tourlist->passenger_name }}</td>
                                             <td>{{$tourlist->passenger_phone }}</td>
+                                            <td>{{$tourlist->clicked }}</td>
                                             <td>{{$tourlist->busstop }}</td>
                                             <td>
                                                 <div class="action-btns">
