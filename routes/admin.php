@@ -59,3 +59,7 @@ Route::get('/delpt/{id}/','Admin\HomeController@delpt');
 Route::get('/today', 'Admin\HomeController@today');
 
 Route::get('/push', 'Admin\HomeController@push');
+
+Route::post('/addbusstop','Admin\HomeController@addbusstop');
+Route::get('/delbusstop/{id}/','Admin\HomeController@delbusstop');
+Route::get('/busstop', 'Admin\HomeController@busstop');

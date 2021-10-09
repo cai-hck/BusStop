@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s6">
+                        <!--    <div class="input-field col s6">
                                 <select id="single-select2" class="basic-select" name="busstop" required>
                                     <option value="" disabled="disabled" selected="selected">Choose your option</option>
                                     @foreach ($busstops as $busstop)
@@ -86,7 +86,7 @@
                                     @endForeach
                                 </select>
                                 <label for="single-select2">BusStop</label>
-                            </div>
+                            </div> -->
                             <div class="input-field col s6">
                                 <input type="text" id="booking_id" name="booking_id" class="validate" required>
                                 <label for="booking_id" class="active">Booking ID</label>
@@ -127,7 +127,7 @@
                                     <th>Tour Name</th>
                                     <th>Passenger Name</th>
                                     <th>Passenger Phone</th>
-                                    <th>Busstop</th>
+                                    <th>OnBus</th>
                                     <th>Click</th>
                                     <th>Action</th>
                                 </tr>
@@ -140,8 +140,8 @@
                                             <td>{{$tourlist->name }}</td>
                                             <td>{{$tourlist->passenger_name }}</td>
                                             <td>{{$tourlist->passenger_phone }}</td>
+                                            <td>{{$tourlist->onbus }}</td>
                                             <td>{{$tourlist->clicked }}</td>
-                                            <td>{{$tourlist->busstop }}</td>
                                             <td>
                                                 <div class="action-btns">
                                                     <a class="btn-floating error-bg" onclick="return confirm('Are you sure?')" href="{{ url('/admin/delpt/'.$tourlist->id)}}">

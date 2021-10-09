@@ -11,17 +11,20 @@
 		    $('select[name=DataTables_Table_0_length]').show();
             $('.datatable-badges').DataTable({
                 columnDefs: [{
-                    width: '25%',
+                    width: '20%',
                     targets: [0]
                 }, {
-                    width: '25%',
+                    width: '20%',
                     targets: [1]
                 }, {
-                    width: '25%',
+                    width: '20%',
                     targets: [2]
+                }, {
+                    width: '20%',
+                    targets: [3]
                 },{
                     width: 'auto',
-                    targets: [3]
+                    targets: [4]
                 }]
             });
             $('#open_adddriver').click(function(){

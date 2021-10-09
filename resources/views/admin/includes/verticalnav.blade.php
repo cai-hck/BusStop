@@ -44,6 +44,12 @@
             </a>
         </li>
         <li>
+            <a class="collapsible-header no-col-body waves-effect waves-set" href="{{ url('/admin/busstop') }}">
+                <i class="material-icons">dashboard</i>
+                <span>Busstop</span>
+            </a>
+        </li>
+        <li>
             <a class="collapsible-header no-col-body waves-effect waves-set" href="{{ url('/admin/driver') }}">
                 <i class="material-icons">dashboard</i>
                 <span>Driver</span>

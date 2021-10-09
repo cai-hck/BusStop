@@ -66,6 +66,30 @@ class HomeController extends Controller
         $driver->delete();
         return back();
     }
+    public function busstop()
+    {
+        $busstops = busstop::select()
+                            ->get();
+        return view('admin.busstop')
+                ->with('busstops',$busstops);
+    }
+    public function addbusstop(Request $request)
+    {
+        $busstop = new busstop();
+        $busstop->name = $request->name;
+        $busstop->lat = $request->lat;
+        $busstop->long = $request->long;
+        $busstop->save();
+        return back();
+    }
+    public function delbusstop($id)
+    {
+        $busstop = busstop::select()
+                    ->where('id',$id)
+                    ->first();
+        $busstop->delete();
+        return back();
+    }
     public function editdriver(Request $request)
     {
         $driver = driver::select()
@@ -172,15 +196,15 @@ class HomeController extends Controller
                     ->get();
 
         foreach($tourlists as $tourlist){
-            if($tourlist->device_token != '' && $tourlist->time == date('Y-m-d')  && $tourlist->arrived == '' ){
+            if($tourlist->device_token != '' && $tourlist->time == date('Y-m-d')  && $tourlist->clicked == '' ){
                 $ch = curl_init();
                 $headers  = [
                             'Content-Type: application/json',
                         ];
                 $postData = [
-                    'to' => 'ExponentPushToken['.$tourlist->device_token.']',
-                    'title' => 'hello',
-                    'body' => 'world',
+                    'to' => $tourlist->device_token,
+                    'title' => 'Hello '.$tourlist->passenger_name,
+                    'body' => 'Please arrive to busstop!!! You can check Bus info in your App',
                 ];
                 curl_setopt($ch, CURLOPT_URL,'https://exp.host/--/api/v2/push/send');
                 curl_setopt($ch, CURLOPT_POST, 1);
@@ -200,7 +224,7 @@ class HomeController extends Controller
         $tourlist->tour_id = $request->tour_id;
         $tourlist->passenger_name = $request->passenger_name;
         $tourlist->passenger_phone = $request->passenger_phone;
-        $tourlist->busstop = $request->busstop;
+   //     $tourlist->busstop = $request->busstop;
         $tourlist->booking_id = $request->booking_id;
         $tourlist->save();
         return back();
