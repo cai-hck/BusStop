@@ -52,13 +52,13 @@ class ApiController extends Controller
     }
     public function arrived($id)
     {
-        $tour = tourlist::select()->where('booking_id',$id)->first();
-        if(is_null($tour)){
+        $tourlist = tourlist::select()->where('booking_id',$id)->first();
+        if(is_null($tourlist)){
             $return = array('status' => 'No');
         }
         else{
-            $tour->clicked = 'yes';
-            $tour->save();
+            $tourlist->clicked = 'yes';
+            $tourlist->save();
             $return = array('status' => 'Yes');
         }
         return json_encode($return); 
@@ -80,7 +80,7 @@ class ApiController extends Controller
     public function getbusinfo($id)
     {
         $tourlist = tourlist::select()->where('booking_id',$id)->first();
-        $tour = tour::select('id','name','filename','bus_nuber','time')->where('id',$tourlist->tour_id)->first();
+        $tour = tour::select('id','name','filename','bus_number','driver_id','time')->where('id',$tourlist->tour_id)->first();
         $return = array('status' => 'yes','tour' => $tour, 'arrive'=>$tourlist->clicked);
         return json_encode($return); 
     }
@@ -114,7 +114,7 @@ class ApiController extends Controller
     public function donbus($id)
     {
         $tourlist = tourlist::select()->where('id',$id)->first();
-        if(is_null($tour)){
+        if(is_null($tourlist)){
             $return = array('status' => 'No');
         }
         else{
@@ -135,6 +135,17 @@ class ApiController extends Controller
             $driver->long = $long;
             $driver->save();
             $return = array('status' => 'Yes');
+        }
+        return json_encode($return); 
+    }
+    public function glocation($id)
+    {
+        $driver = driver::select('lat','long')->where('driver_id',$id)->first();
+        if(is_null($driver)){
+            $return = array('status' => 'No');
+        }
+        else{
+            $return = array('status' => 'Yes','location'=>$driver);
         }
         return json_encode($return); 
     }

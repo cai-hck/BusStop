@@ -26,3 +26,4 @@ Route::get('/arrived/{id}', 'ApiController@arrived');
 Route::get('/dlogin/{id}', 'ApiController@dlogin');
 Route::get('/donbus/{id}', 'ApiController@donbus');
 Route::get('/dlocation/{id}/{rat}/{long}', 'ApiController@dlocation');
+Route::get('/glocation/{id}', 'ApiController@glocation');
