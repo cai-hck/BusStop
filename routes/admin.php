@@ -63,3 +63,6 @@ Route::get('/push', 'Admin\HomeController@push');
 Route::post('/addbusstop','Admin\HomeController@addbusstop');
 Route::get('/delbusstop/{id}/','Admin\HomeController@delbusstop');
 Route::get('/busstop', 'Admin\HomeController@busstop');
+
+Route::get('/getdriver', 'Admin\HomeController@getdriver');
+

@@ -237,4 +237,10 @@ class HomeController extends Controller
         $tourlist->delete();
         return back();
     }
+    
+    public function getdriver()
+    {
+        $drivers = driver::select('name','lat','long')->get();
+        return json_encode($drivers);
+    }
 }

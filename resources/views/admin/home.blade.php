@@ -36,14 +36,42 @@
 
         map = new google.maps.Map(mapLayer, defaultOptions);
     }*/
+    var  n = 0;
+    var locations = [
+            ['Raj Ghat', 28.648608, 77.250925, 1],
+            ['Purana Qila', 28.618174, 77.242686, 2],
+            ['Red Fort', 28.663973, 77.241656, 3],
+            ['India Gate', 28.620585, 77.228609, 4],
+            ['Jantar Mantar', 28.636219, 77.213846, 5],
+            ['Akshardham', 28.622658, 77.277704, 6]
+        ];
     var map
     function initMap() {
         var mapProp= {
-        center:new google.maps.LatLng(51.508742,-0.120850),
-        zoom:15,
+            center:new google.maps.LatLng(64.1376866, -21.9366231),
+            zoom:13,
         };
         map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
     }
+    setInterval(() => {
+        $.ajax({
+            type:'get',
+            url:'/admin/getdriver',
+            success:function(response) {           
+                var drivers = JSON.parse(response);
+                for (var i = 0; i < drivers.length; i++) {
+                    locations[i][0] = drivers[i].name;
+                    locations[i][1] = drivers[i].lat;
+                    locations[i][2] = drivers[i].long;
+                }
+                n = drivers.length;
+                locates();
+            },
+            failure:function(e){
+                console.log(e);
+            }
+        })
+    }, 5000);
     function locate(){
         document.getElementById("btnAction").disabled = true;
         document.getElementById("btnAction").innerHTML = "Processing...";
@@ -59,30 +87,52 @@
                 document.getElementById("btnAction").style.display = 'none';
             });
         }
-     /*   if (navigator.geolocation) { 
-            navigator.geolocation.getCurrentPosition(function(position) {  
-
-                var point = new google.maps.LatLng(position.coords.latitude, 
-                                                position.coords.longitude);
-
-                // Initialize the Google Maps API v3
-                var map = new google.maps.Map(document.getElementById('googleMap'), {
-                    zoom: 15,
-                    center: point,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                });
-
-                // Place a marker
-                new google.maps.Marker({
-                    position: point,
-                    map: map
-                });
-            }); 
-        } 
-        else {
-            alert('W3C Geolocation API is not available');
-        } */
     }
+    function locates(){
+        var infowindow = new google.maps.InfoWindow();
+        var marker, i;
+        for (i = 0; i < n; i++) {
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    infowindow.setContent(locations[i][0]);
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
+        }
+    }
+/*    var locations = [
+            ['Raj Ghat', 28.648608, 77.250925, 1],
+            ['Purana Qila', 28.618174, 77.242686, 2],
+            ['Red Fort', 28.663973, 77.241656, 3],
+            ['India Gate', 28.620585, 77.228609, 4],
+            ['Jantar Mantar', 28.636219, 77.213846, 5],
+            ['Akshardham', 28.622658, 77.277704, 6]
+        ];
+    function InitMap() {
+        var map = new google.maps.Map(document.getElementById('googleMap'), {
+            zoom: 13,
+            center: new google.maps.LatLng(28.614884, 77.208917),
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        var infowindow = new google.maps.InfoWindow();
+        var marker, i;
+        for (i = 0; i < locations.length; i++) {
+            marker = new google.maps.Marker({
+                position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    infowindow.setContent(locations[i][0]);
+                    infowindow.open(map, marker);
+                }
+            })(marker, i));
+        }
+    }*/
 </script>
 @endsection
 
@@ -143,8 +193,8 @@
         </div>
     </div>
     <div id="button-layer">
-        <button id="btnAction" onClick="locate()">My Current Location</button>
+        <button id="btnAction" onClick="locates()">My Current Location</button>
     </div>
-    <div id="googleMap" style="width:100%;height:400px;"></div>
+    <div id="googleMap" style="width:100%;height:700px;"></div>
 </div>
 @endsection
