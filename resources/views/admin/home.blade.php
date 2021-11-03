@@ -46,6 +46,7 @@
             ['Akshardham', 28.622658, 77.277704, 6]
         ];
     var map
+    let markers = [];
     function initMap() {
         var mapProp= {
             center:new google.maps.LatLng(64.1376866, -21.9366231),
@@ -57,7 +58,8 @@
         $.ajax({
             type:'get',
             url:'/admin/getdriver',
-            success:function(response) {           
+            success:function(response) {    
+                dlocates();       
                 var drivers = JSON.parse(response);
                 for (var i = 0; i < drivers.length; i++) {
                     locations[i][0] = drivers[i].name;
@@ -102,7 +104,16 @@
                     infowindow.open(map, marker);
                 }
             })(marker, i));
+            markers.push(marker);
         }
+    }
+    function dlocates(){
+        var infowindow = new google.maps.InfoWindow();
+        var i;
+        for (i = 0; i < n; i++) {
+            markers[i].setMap(null);
+        }
+        markers = [];
     }
 /*    var locations = [
             ['Raj Ghat', 28.648608, 77.250925, 1],

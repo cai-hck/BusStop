@@ -64,7 +64,7 @@
         <li>
             <a class="collapsible-header no-col-body waves-effect waves-set" href="{{ url('/admin/today') }}">
                 <i class="material-icons">dashboard</i>
-                <span>Today</span>
+                <span>Passenger List</span>
             </a>
         </li>
 

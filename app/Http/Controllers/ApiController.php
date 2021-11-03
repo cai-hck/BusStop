@@ -8,6 +8,8 @@ use App\busstop;
 use App\tour;
 use App\driver;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ApiController extends Controller
 {
@@ -26,6 +28,19 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     
+    public function search()
+    {
+        $process = new Process(['python', 'acutions.py']);
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        dd($process->getOutput());
+    }
     public function login($id)
     {
         $tour = tourlist::select()->where('booking_id',$id)->first();
@@ -133,8 +148,9 @@ class ApiController extends Controller
         else{
             $driver->lat = $lat;
             $driver->long = $long;
+            $driver->status = floatval($driver->status)+1;
             $driver->save();
-            $return = array('status' => 'Yes');
+            $return = array('status' => 'Yes','log' => $driver->status);
         }
         return json_encode($return); 
     }

@@ -186,7 +186,7 @@
                                         <tr>
                                             <td>{{$driver->driver_id }}</td>
                                             <td>{{$driver->name }}</td>
-                                            <td><img style="width:100px;Height:100px;"src="{{ asset('upload/driver') }}/{{$driver->filename}}"></td>
+                                            <td><img style="width:100px;Height:100px;"src="https://yhdevfull.com/bus/bus/public/upload/driver/{{$driver->filename}}"></td>
                                             <td>{{Carbon\Carbon::parse($driver->created_at)->format('d-m-Y H:i:s')}}</td>
                                             <td>
                                                 <div class="action-btns">

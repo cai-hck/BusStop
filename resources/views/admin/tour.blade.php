@@ -38,6 +38,15 @@
             $('#open_addtour').click(function(){
                 $('#div_addtour').show();
             })
+            $('.open_edittour').click(function(){
+                $('#edit_id').val($(this).next().val());
+                $('#edit_name').val($(this).next().next().val());
+                $('#edit_bus_number').val($(this).next().next().next().val());
+                $('#edit_time').val($(this).next().next().next().next().val());
+                $('#edit_driver_id').val($(this).next().next().next().next().next().val());
+                $('#edit_file').val($(this).next().next().next().next().next().next().val());
+                $('#div_editdriver').show();
+            })
         } );
         $('.filestyle').on('change',function(e){
         var file = e.target.files[0];
@@ -74,7 +83,7 @@
                                 <label for="bus_number" class="active">Bus Number</label>
                             </div>
                             <div class="input-field col s4">
-                                <input type="time" id="bus_number" name="time" class="validate" required>
+                                <input type="time" id="time" name="time" class="validate" required>
                                 <label for="time" class="active">Time</label>
                             </div>
                         </div>
@@ -95,6 +104,66 @@
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <div style="text-align:center">
+                                    <img class="images" id="image" src="#" alt="Your Logo" style="display:none"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12 right-align">
+                            <button class="btn waves-effect waves-set" type="submit" name="update_profile">Save<i class="material-icons right">save</i>
+                            </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="div_editdriver" style="display:none">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <h5>Edit Tour</h5>
+                    <form  action="{{ url('/admin/edittour') }}" method="POST"  enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" id="edit_id" name="edit_id" class="validate" required>
+                        <div class="row">
+                            <div class="input-field col s4">
+                                <input type="text" id="edit_name" name="edit_name" class="validate" required>
+                                <label for="edit_name" class="active">Name</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <input type="text" id="edit_bus_number" name="edit_bus_number" class="validate" required>
+                                <label for="edit_bus_number" class="active">Bus Number</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <input type="time" id="edit_time" name="edit_time" class="validate" required>
+                                <label for="edit_time" class="active">Time</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <select id="edit_driver_id" class="basic-select" name="edit_driver_id" required >
+                                    <option value=""></option>
+                                    @foreach ($drivers as $driver)
+                                        <option value="{{$driver->driver_id}}">{{$driver->driver_id}}</option>
+                                    @endForeach
+                                </select>
+                                <label for="edit_driver_id">Driver ID</label>
+                            </div>
+                            <div class="input-field col s6 file-field">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input class="filestyle margin images" data-input="false" type="file" name="image" data-buttonText="Upload Logo" data-size="sm" data-badge="false">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" id="edit_file">
                                 </div>
                             </div>
                         </div>
@@ -150,9 +219,20 @@
                                             <td>{{$tour->time }}</td>
                                             <td>{{$tour->driver_id }}</td>
                                             <td>{{$tour->bus_number }}</td>
-                                            <td><img style="width:100px;Height:100px;"src="{{ asset('upload/tour') }}/{{$tour->filename}}"></td>
+                                            <td><img style="width:100px;Height:100px;"src="https://yhdevfull.com/bus/bus/public/upload/tour/{{$tour->filename}}"></td>
                                             <td>{{Carbon\Carbon::parse($tour->created_at)->format('d-m-Y H:i:s')}}</td>
                                             <td>
+                                                <div class="action-btns">
+                                                    <a class="btn-floating wornging-bg open_edittour" href="#"  id="">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                    <input type="hidden" value="{{$tour->id}}">
+                                                    <input type="hidden" value="{{$tour->name}}">
+                                                    <input type="hidden" value="{{$tour->bus_number}}">
+                                                    <input type="hidden" value="{{$tour->time}}">
+                                                    <input type="hidden" value="{{$tour->driver_id}}">
+                                                    <input type="hidden" value="{{$tour->filename}}">
+                                                </div>
                                                 <div class="action-btns">
                                                     <a class="btn-floating error-bg" onclick="return confirm('Are you sure?')" href="{{ url('/admin/deltour/'.$tour->id)}}">
                                                         <i class="material-icons">delete</i>

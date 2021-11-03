@@ -4,36 +4,69 @@
 @endsection
 
 @section('jsPostApp')
-    <script src="{{ asset('plugins/datatable/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            
-		    $('select[name=DataTables_Table_0_length]').show();
-            $('.datatable-badges').DataTable({
-                columnDefs: [{
-                    width: '20%',
-                    targets: [0]
-                }, {
-                    width: '20%',
-                    targets: [1]
-                }, {
-                    width: '20%',
-                    targets: [2]
-                }, {
-                    width: '20%',
-                    targets: [3]
-                },{
-                    width: 'auto',
-                    targets: [4]
-                }]
-            });
-            $('#open_addbusstop').click(function(){
-                $('#div_addbusstop').show();
-            })
-        } );
-    </script>
-@endsection
+<script src="{{ asset('plugins/datatable/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDu8j0A78kPx4g_fKslJuBIQAigk5qPGlg&callback=initMap"
+	async defer></script>
+<script type="text/javascript">
+
+    function initMap() { 
+        const myLatlng = { lat: 64.1376866, lng: -21.9366231};
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 13,
+            center: myLatlng,
+        });
+        // Create the initial InfoWindow.
+        let infoWindow = new google.maps.InfoWindow({
+            content: "Click the map to get Lat/Lng!",
+            position: myLatlng,
+        });
+
+        infoWindow.open(map);
+        // Configure the click listener.
+        map.addListener("click", (mapsMouseEvent) => {
+            // Close the current InfoWindow.
+            infoWindow.close();
+            // Create a new InfoWindow.
+            infoWindow = new google.maps.InfoWindow({
+            position: mapsMouseEvent.latLng,
+            });
+            infoWindow.setContent(
+            JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+            );
+            infoWindow.open(map);
+            document.getElementById("lat").value = mapsMouseEvent.latLng.toJSON().lat;
+            document.getElementById("long").value = mapsMouseEvent.latLng.toJSON().lng;
+        });
+    }
+    $(document).ready(function() {
+        
+        $('select[name=DataTables_Table_0_length]').show();
+        $('.datatable-badges').DataTable({
+            columnDefs: [{
+                width: '20%',
+                targets: [0]
+            }, {
+                width: '20%',
+                targets: [1]
+            }, {
+                width: '20%',
+                targets: [2]
+            }, {
+                width: '20%',
+                targets: [3]
+            },{
+                width: 'auto',
+                targets: [4]
+            }]
+        });
+        $('#open_addbusstop').click(function(){
+            $('#div_addbusstop').show();
+        })
+    } );
+</script>
+@endsection
 @section('content')
 <div class="main-container">
     <div class="row" id="div_addbusstop" style="display:none">
@@ -55,6 +88,10 @@
                             <div class="input-field col s4">
                                 <input type="text" id="long" name="long" class="validate" required>
                                 <label for="long" class="active">Long</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12"  id="map" style="height:500px;">
                             </div>
                         </div>
                         <div class="row">

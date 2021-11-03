@@ -1,6 +1,11 @@
 @extends('admin.layout.default')
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/jquery.dataTables.min.css') }}">
+    <style>
+        .ttables select{
+            display:block;
+        }
+    </style>
 @endsection
 
 @section('jsPostApp')
@@ -34,10 +39,60 @@
                     targets: [6]
                 }]
             });
-		    $('select[name=DataTables_Table_0_length]').show();
+            $('.odatatable-badges').DataTable({
+                columnDefs: [{
+                    width: '15%',
+                    targets: [0]
+                }, {
+                    width: '15%',
+                    targets: [1]
+                }, {
+                    width: '15%',
+                    targets: [2]
+                }, {
+                    width: '15%',
+                    targets: [3]
+                },{
+                    width: '15%',
+                    targets: [4]
+                },{
+                    width: '10%',
+                    targets: [5]
+                },{
+                    width: 'auto',
+                    targets: [6]
+                }]
+            });
+            $('.fdatatable-badges').DataTable({
+                columnDefs: [{
+                    width: '15%',
+                    targets: [0]
+                }, {
+                    width: '15%',
+                    targets: [1]
+                }, {
+                    width: '15%',
+                    targets: [2]
+                }, {
+                    width: '15%',
+                    targets: [3]
+                },{
+                    width: '15%',
+                    targets: [4]
+                },{
+                    width: '10%',
+                    targets: [5]
+                },{
+                    width: 'auto',
+                    targets: [6]
+                }]
+            });
             $('#open_addtourlist').click(function(){
                 $('#div_addtourlist').show();
             })
+		    $('select[name=DataTables_Table_0_length]').show();
+		    $('select[name=DataTables_Table_1_length]').show();
+		    $('select[name=DataTables_Table_2_length]').show();
         } );
     </script>
 @endsection
@@ -103,13 +158,13 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row ttables">
         <!-- With Action-->
         <div class="col s12">
             <div class="card-panel">
                 <div class="row box-title">
                     <div class="col s12">
-                        <h5 class="content-headline">Tourlist Table</h5>
+                        <h5 class="content-headline">Today Tourlist Table</h5>
                     </div>
                     <!-- Modal Structure -->
                     <a class="btn-floating btn-large waves-effect waves-light red tooltipped" id="open_addtourlist"  data-position="bottom" data-delay="50" data-tooltip="Create new Passenger to Tour"><i class="material-icons">add</i></a>
@@ -134,6 +189,110 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($tourlists as $tourlist)
+                                        <tr>
+                                            <td>{{$tourlist->time }}</td>
+                                            <td>{{$tourlist->booking_id }}</td>
+                                            <td>{{$tourlist->name }}</td>
+                                            <td>{{$tourlist->passenger_name }}</td>
+                                            <td>{{$tourlist->passenger_phone }}</td>
+                                            <td>{{$tourlist->onbus }}</td>
+                                            <td>{{$tourlist->clicked }}</td>
+                                            <td>
+                                                <div class="action-btns">
+                                                    <a class="btn-floating error-bg" onclick="return confirm('Are you sure?')" href="{{ url('/admin/delpt/'.$tourlist->id)}}">
+                                                        <i class="material-icons">delete</i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                <tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ttables">
+        <!-- With Action-->
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row box-title">
+                    <div class="col s12">
+                        <h5 class="content-headline">Old Tourlist Table</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="datatable-wrapper" style="    overflow: auto;   position: relative;width: 100%;">
+                            <table class="odatatable-badges display cell-border" style="text-align:center;">
+                                <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Booking ID</th>
+                                    <th>Tour Name</th>
+                                    <th>Passenger Name</th>
+                                    <th>Passenger Phone</th>
+                                    <th>OnBus</th>
+                                    <th>Click</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($otourlists as $tourlist)
+                                        <tr>
+                                            <td>{{$tourlist->time }}</td>
+                                            <td>{{$tourlist->booking_id }}</td>
+                                            <td>{{$tourlist->name }}</td>
+                                            <td>{{$tourlist->passenger_name }}</td>
+                                            <td>{{$tourlist->passenger_phone }}</td>
+                                            <td>{{$tourlist->onbus }}</td>
+                                            <td>{{$tourlist->clicked }}</td>
+                                            <td>
+                                                <div class="action-btns">
+                                                    <a class="btn-floating error-bg" onclick="return confirm('Are you sure?')" href="{{ url('/admin/delpt/'.$tourlist->id)}}">
+                                                        <i class="material-icons">delete</i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                <tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ttables">
+        <!-- With Action-->
+        <div class="col s12">
+            <div class="card-panel">
+                <div class="row box-title">
+                    <div class="col s12">
+                        <h5 class="content-headline">Further Tourlist Table</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="datatable-wrapper" style="    overflow: auto;   position: relative;width: 100%;">
+                            <table class="fdatatable-badges display cell-border" style="text-align:center;">
+                                <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Booking ID</th>
+                                    <th>Tour Name</th>
+                                    <th>Passenger Name</th>
+                                    <th>Passenger Phone</th>
+                                    <th>OnBus</th>
+                                    <th>Click</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($ftourlists as $tourlist)
                                         <tr>
                                             <td>{{$tourlist->time }}</td>
                                             <td>{{$tourlist->booking_id }}</td>

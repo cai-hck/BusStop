@@ -45,9 +45,6 @@ class HomeController extends Controller
         $driver->driver_id = $request->id;
         $driver->name = $request->name;
         if ($request->hasFile('image')) {
-            $this->validate($request, [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-              ]);
             $image = $request->file('image');
             $name = rand(11111, 99999).$_FILES["image"]["name"];
             $destinationPath = public_path('/upload/driver');
@@ -98,9 +95,6 @@ class HomeController extends Controller
         $driver->driver_id = $request->edit_driver_id;
         $driver->name = $request->edit_name;
         if ($request->hasFile('image')) {
-            $this->validate($request, [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-              ]);
             $image = $request->file('image');
             $name = rand(11111, 99999).$_FILES["image"]["name"];
             $destinationPath = public_path('/upload/driver');
@@ -129,9 +123,26 @@ class HomeController extends Controller
         $tour->time = $request->time;
         $tour->bus_number = $request->bus_number;
         if ($request->hasFile('image')) {
-            $this->validate($request, [
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-              ]);
+            $image = $request->file('image');
+            $name = rand(11111, 99999).$_FILES["image"]["name"];
+            $destinationPath = public_path('/upload/tour');
+            $imagePath = $destinationPath. "/".  $name;
+            $image->move($destinationPath, $name);
+            $tour->filename = $name;
+        }
+        $tour->save();
+        return back();
+    }
+    public function edittour(Request $request)
+    {
+        $tour = tour::select()
+            ->where('id',$request->edit_id)
+            ->first();
+        $tour->name = $request->edit_name;
+        $tour->driver_id = $request->edit_driver_id;
+        $tour->time = $request->edit_time;
+        $tour->bus_number = $request->edit_bus_number;
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $name = rand(11111, 99999).$_FILES["image"]["name"];
             $destinationPath = public_path('/upload/tour');
@@ -182,11 +193,22 @@ class HomeController extends Controller
                     ->get();
         $busstops = busstop::select()
                     ->get();
+        $otourlists = tourlist::select('tourlists.id','tourlists.time','tours.name','tourlists.booking_id','tourlists.passenger_name','tourlists.passenger_phone','tourlists.busstop')
+                    ->leftjoin('tours','tourlists.tour_id','=','tours.id')
+                    ->where('tourlists.time','<',date('Y-m-d'))
+                    ->get();
         $tourlists = tourlist::select('tourlists.id','tourlists.time','tours.name','tourlists.booking_id','tourlists.passenger_name','tourlists.passenger_phone','tourlists.busstop')
                     ->leftjoin('tours','tourlists.tour_id','=','tours.id')
+                    ->where('tourlists.time',date('Y-m-d'))
+                    ->get();
+        $ftourlists = tourlist::select('tourlists.id','tourlists.time','tours.name','tourlists.booking_id','tourlists.passenger_name','tourlists.passenger_phone','tourlists.busstop')
+                    ->leftjoin('tours','tourlists.tour_id','=','tours.id')
+                    ->where('tourlists.time','>',date('Y-m-d'))
                     ->get();
         return view('admin.today')
                 ->with('tourlists',$tourlists)
+                ->with('otourlists',$otourlists)
+                ->with('ftourlists',$ftourlists)
                 ->with('busstops',$busstops)
                 ->with('tours',$tours);
     }
